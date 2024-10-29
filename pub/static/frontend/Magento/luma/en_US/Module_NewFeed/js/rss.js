@@ -1,0 +1,1 @@
+/var/www/html/magento2/app/code/Module/NewFeed/view/frontend/web/js/rss.js
