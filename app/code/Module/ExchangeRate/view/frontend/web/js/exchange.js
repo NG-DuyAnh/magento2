@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Fetch exchange rates when the button is clicked
-    document.getElementById("fetchRates").addEventListener("click", function () {
-        const apiKey = "3ead446c6aa4b044be06b377"; // Replace with your API key
-        const baseCurrency = "VND";
+    const apiKey = "3ead446c6aa4b044be06b377"; // Replace with your API key
+    const baseCurrency = "VND";
+    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`;
+    let fetchInterval;
 
-        const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`;
-
+    // Function to fetch and display exchange rates
+    function fetchAndDisplayRates() {
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error("Error fetching the data:", error);
                 alert("An error occurred while fetching the data.");
             });
-    });
+    }
 
     // Function to display exchange rates and handle the conversion
     function displayResults(conversionRates) {
@@ -79,4 +79,15 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("conversionResult").textContent = `${vndInput} VND = ${convertedAmount} ${selectedCurrency}`;
         });
     }
+
+    // Fetch and display rates when the page loads
+    fetchAndDisplayRates();
+
+    // Update rates every 10 minutes (600,000 milliseconds)
+    fetchInterval = setInterval(fetchAndDisplayRates, 600000);
+
+    // Optional: Clear the interval when the user leaves the page
+    window.addEventListener("beforeunload", function () {
+        clearInterval(fetchInterval);
+    });
 });
